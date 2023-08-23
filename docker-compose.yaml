@@ -1,0 +1,25 @@
+version: '3'
+services:
+
+  springboot:
+    container_name: springboot
+    image: myimage
+    depends_on:
+      - "postgres"
+    ports:
+      - 8080:8080
+
+  postgres:
+    container_name: postgres
+    image: 'postgres:alpine'
+    volumes:
+      - postgres-volume:/var/lib/postgresql/data
+    ports:
+      - 5432:5432
+    environment:
+      POSTGRES_USER: postgres
+      POSTGRES_PASSWORD: password
+      POSTGRES_DB: springboot
+
+volumes:
+  postgres-volume:
