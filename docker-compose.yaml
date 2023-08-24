@@ -5,21 +5,31 @@ services:
     container_name: springboot
     image: myimage
     depends_on:
-      - "postgres"
+      - "db"
+    environment:
+      POSTGRES_USER: postgres
+      POSTGRES_PASSWORD: password
+      DATABASE_URL: "jdbc:postgresql://db:5433/db"
     ports:
       - 8080:8080
+    networks:
+      - app
 
-  postgres:
-    container_name: postgres
+  db:
+    container_name: db
     image: 'postgres:alpine'
     volumes:
       - postgres-volume:/var/lib/postgresql/data
     ports:
-      - 5432:5432
+      - 5433:5432
     environment:
       POSTGRES_USER: postgres
       POSTGRES_PASSWORD: password
-      POSTGRES_DB: springboot
+      POSTGRES_DB: db
+    networks:
+      - app
 
 volumes:
   postgres-volume:
+networks:
+    app:
